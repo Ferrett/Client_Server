@@ -41,6 +41,8 @@ namespace Server
                     nums[1] = int.Parse(stringBuilder.ToString().Split(',')[1].Split(']')[0]);
 
                     Console.WriteLine($"Result: {nums[0]}+{nums[1]}={nums[0]+nums[1]}");
+
+                    socketClient.Send(data);
                 }
             }
             catch (Exception ex)

@@ -22,12 +22,7 @@ namespace CLient_serv
                 byte[] data = new byte[256];
                 StringBuilder stringBuilder = new StringBuilder();
 
-                //do
-                //{
-                //    bytes = socket.Receive(data);
-                //    stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                //} while (socket.Available > 0);
-                //Console.WriteLine(stringBuilder.ToString());
+               
 
 
 
@@ -37,6 +32,13 @@ namespace CLient_serv
                 socket.Send(data);
 
                 Console.WriteLine($"Sms \"{sms}\" send to SERVER [{ipAddr}]!");
+
+                do
+                {
+                    bytes = socket.Receive(data);
+                    stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                } while (socket.Available > 0);
+                Console.WriteLine(stringBuilder.ToString());
             }
             catch (Exception ex)
             {
