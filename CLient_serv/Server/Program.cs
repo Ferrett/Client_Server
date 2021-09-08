@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
+
 namespace Server
 {
     class Program
@@ -33,7 +34,12 @@ namespace Server
                         stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
                     } while (socketClient.Available > 0);
 
-                    Console.WriteLine($"MSG: {stringBuilder.ToString()}");
+                    int[] nums = { 0, 0 };
+
+                    nums[0] = int.Parse(stringBuilder.ToString().Split(',')[0].Split('[')[1]);
+                    nums[1] = int.Parse(stringBuilder.ToString().Split(',')[1].Split(']')[0]);
+
+                    Console.WriteLine($"Result: {nums[0]}+{nums[1]}={nums[0]+nums[1]}");
                 }
             }
             catch (Exception ex)
