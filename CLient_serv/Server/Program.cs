@@ -28,6 +28,7 @@ namespace Server
                     int bytes = 0;
                     byte[] data = new byte[256];
 
+
                     do
                     {
                         bytes = socketClient.Receive(data);
