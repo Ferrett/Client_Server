@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Linq;
 
 
 namespace Server
@@ -14,10 +14,12 @@ namespace Server
 
         static int port = 8000;
 
-        public static byte[] Test(StringBuilder stringBuilder, Dictionary<string, int> wordsCount, string[] words, string returnString, byte[] data)
+        public static byte[] StringAnalitics(StringBuilder stringBuilder, Dictionary<string, int> wordsCount, string[] words, string returnString)
         {
+            // Get array of words
             words = stringBuilder.ToString().Split(' ');
 
+            // Count amount of each word
             foreach (var item in words)
             {
                 if (wordsCount.ContainsKey(item)==false)
@@ -25,17 +27,17 @@ namespace Server
                 else
                     wordsCount[item]++;
             }
+
+            // Sort dictionary
             wordsCount = wordsCount.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
             
-
+            //  Get the statistics string
             for (int i = 0; i < wordsCount.Count; i++)
             {
                 returnString += wordsCount.ElementAt(i).Key + ": " + wordsCount.ElementAt(i).Value + "\n";
             }
 
-            data = Encoding.Unicode.GetBytes(returnString);
-
-            return data;
+            return Encoding.Unicode.GetBytes(returnString);
         }
 
         static void Main(string[] args)
@@ -69,17 +71,16 @@ namespace Server
                     } while (socketClient.Available > 0);
 
 
-                    data = Test(stringBuilder,  wordsCount,  words,  returnString, data);
+                    data = StringAnalitics(stringBuilder,  wordsCount,  words,  returnString);
                     
                     socketClient.Send(data);
-                    
+
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            Console.WriteLine("Hello World!");
         }
     }
 }

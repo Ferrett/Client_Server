@@ -33,12 +33,9 @@ namespace CLient_serv
                 data = Encoding.Unicode.GetBytes(sms);
 
 
-               
-
-
                 socket.Send(data);
 
-                Console.WriteLine($"String send success!");
+                Console.WriteLine($"\nString send success!\nResult:\n");
 
 
                 do
@@ -47,7 +44,6 @@ namespace CLient_serv
                     stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
                 } while (socket.Available > 0);
                 Console.WriteLine(stringBuilder.ToString());
-                Console.ReadLine();
             }
             catch (Exception ex)
             {
