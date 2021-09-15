@@ -11,7 +11,14 @@ namespace CLient_serv
 {
     class Program
     {
-
+        static void DrawField()
+        {
+            Console.WriteLine($"{TicTacToe.Field[0, 0]}|{TicTacToe.Field[0, 1]}|{TicTacToe.Field[0, 2]}");
+            Console.WriteLine($"—————");
+            Console.WriteLine($"{TicTacToe.Field[1, 0]}|{TicTacToe.Field[1, 1]}|{TicTacToe.Field[1, 2]}");
+            Console.WriteLine($"—————");
+            Console.WriteLine($"{TicTacToe.Field[2, 0]}|{TicTacToe.Field[2, 1]}|{TicTacToe.Field[2, 2]}\n");
+        }
 
         static int port = 8000;
 
@@ -38,12 +45,9 @@ namespace CLient_serv
                     byte[] data = new byte[256];
                     string turn = String.Empty;
 
-                    
-
                     while (true)
                     {
-
-                        if (TicTacToe.YourTurn == false)
+                        if (TicTacToe.Player2Turn == false)
                         {
                             Console.WriteLine("Wait for other player to make turn!");
                             do
@@ -52,21 +56,43 @@ namespace CLient_serv
                                 stringBuilder.Append(Encoding.Unicode.GetString(data, 0, bytes));
                             } while (socketClient.Available > 0);
 
-                            TicTacToe.Field[int.Parse(stringBuilder.ToString().Split(',')[0]), int.Parse(stringBuilder.ToString().Split(',')[1])]='X';
-                           
+      
+                            TicTacToe.Field[int.Parse(stringBuilder.ToString().Split(',')[0])-1, int.Parse(stringBuilder.ToString().Split(',')[1])-1]= TicTacToe.Player1Symb;
+                            stringBuilder = new StringBuilder();
 
-
-                            TicTacToe.YourTurn = true;
+                            if (TicTacToe.CheckWin())
+                                break;
+                            Console.Clear();
+                            TicTacToe.Player2Turn = true; 
                         }
                         else
                         {
-                            Console.WriteLine("Your turn!");
-                            turn = Console.ReadLine();
-                            socketClient.Send(Encoding.Unicode.GetBytes(TicTacToe.FieldToString()));
+                            while (true)
+                            {
+                                DrawField();
 
-                            TicTacToe.YourTurn = false;
+                                Console.WriteLine("Your turn! Enter cords like this: 1,1");
+                                turn = Console.ReadLine();
+                                if (TicTacToe.Field[int.Parse(turn.Split(',')[0]) - 1, int.Parse(turn.Split(',')[1]) - 1] == ' ')
+                                    break;
+                                Console.Clear();
+                            }
+                            TicTacToe.Field[int.Parse(turn.Split(',')[0]) - 1, int.Parse(turn.Split(',')[1]) - 1] = TicTacToe.Player2Symb;
+                            if (TicTacToe.CheckWin())
+                                break;
+                            socketClient.Send(Encoding.Unicode.GetBytes(TicTacToe.FieldToString()));
+                            Console.Clear();
+                            TicTacToe.Player2Turn = false;
                         }
                     }
+                    Console.Clear();
+                    DrawField();
+                    if(TicTacToe.Player2Turn==false)
+                        Console.WriteLine("GG! Player 1 Won!");
+                    else
+                        Console.WriteLine("GG! Player 2 Won!");
+
+                    socketClient.Send(Encoding.Unicode.GetBytes("GG"));
                 }
             }
             catch (Exception ex)
