@@ -33,28 +33,28 @@ namespace CLient_serv
                 socket.Connect(iPEndPoint);
                 int bytes = 0;
                 byte[] data = new byte[256];
-                string turn = String.Empty;
-                bool turnP = true;
+                string turnString = String.Empty;
+                bool YourTurn = true;
                 StringBuilder stringBuilder = new StringBuilder();
-                string[,] nums = new string[3,3]{ { " ", " ", " " }, { " ", " ", " " },{ " ", " ", " " } };
+                string[,] field = new string[3,3]{ { " ", " ", " " }, { " ", " ", " " },{ " ", " ", " " } };
      
                 while (true)
                 {
-                    if(turnP==true)
+                    if(YourTurn==true)
                     {
                         while (true)
                         {
-                            DrawField(nums);
+                            DrawField(field);
 
                             Console.WriteLine("Your turn! Enter cords like this: 1,1");
-                            turn = Console.ReadLine();
-                            if (nums[int.Parse(turn.Split(',')[0])-1, int.Parse(turn.Split(',')[1])-1] == " ")
+                            turnString = Console.ReadLine();
+                            if (field[int.Parse(turnString.Split(',')[0])-1, int.Parse(turnString.Split(',')[1])-1] == " ")
                                 break;
                             Console.Clear();
                         }
-                        socket.Send(Encoding.Unicode.GetBytes(turn));
+                        socket.Send(Encoding.Unicode.GetBytes(turnString));
                         Console.Clear();
-                        turnP = false;
+                        YourTurn = false;
                     }
                     else
                     {
@@ -68,25 +68,25 @@ namespace CLient_serv
                         if (stringBuilder.ToString() == "GG")
                             break;
 
-                        nums[0, 0] = stringBuilder.ToString().Split('.')[0];
-                        nums[0, 1] = stringBuilder.ToString().Split('.')[1];
-                        nums[0, 2] = stringBuilder.ToString().Split('.')[2];
-                        nums[1, 0] = stringBuilder.ToString().Split('.')[3];
-                        nums[1, 1] = stringBuilder.ToString().Split('.')[4];
-                        nums[1, 2] = stringBuilder.ToString().Split('.')[5];
-                        nums[2, 0] = stringBuilder.ToString().Split('.')[6];
-                        nums[2, 1] = stringBuilder.ToString().Split('.')[7];
-                        nums[2, 2] = stringBuilder.ToString().Split('.')[8];
+                        field[0, 0] = stringBuilder.ToString().Split('.')[0];
+                        field[0, 1] = stringBuilder.ToString().Split('.')[1];
+                        field[0, 2] = stringBuilder.ToString().Split('.')[2];
+                        field[1, 0] = stringBuilder.ToString().Split('.')[3];
+                        field[1, 1] = stringBuilder.ToString().Split('.')[4];
+                        field[1, 2] = stringBuilder.ToString().Split('.')[5];
+                        field[2, 0] = stringBuilder.ToString().Split('.')[6];
+                        field[2, 1] = stringBuilder.ToString().Split('.')[7];
+                        field[2, 2] = stringBuilder.ToString().Split('.')[8];
 
 
                         stringBuilder = new StringBuilder();
                         Console.Clear();
-                        turnP = true;
+                        YourTurn = true;
                     }
                 }
                 Console.Clear();
-                DrawField(nums);
-                if (turnP == false)
+                DrawField(field);
+                if (YourTurn == false)
                     Console.WriteLine("GG! Player 1 Won!");
                 else
                     Console.WriteLine("GG! Player 2 Won!");

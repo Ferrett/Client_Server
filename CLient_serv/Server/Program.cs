@@ -43,7 +43,7 @@ namespace CLient_serv
                     StringBuilder stringBuilder = new StringBuilder();
                     int bytes = 0;
                     byte[] data = new byte[256];
-                    string turn = String.Empty;
+                    string turnString = String.Empty;
 
                     while (true)
                     {
@@ -72,12 +72,12 @@ namespace CLient_serv
                                 DrawField();
 
                                 Console.WriteLine("Your turn! Enter cords like this: 1,1");
-                                turn = Console.ReadLine();
-                                if (TicTacToe.Field[int.Parse(turn.Split(',')[0]) - 1, int.Parse(turn.Split(',')[1]) - 1] == ' ')
+                                turnString = Console.ReadLine();
+                                if (TicTacToe.Field[int.Parse(turnString.Split(',')[0]) - 1, int.Parse(turnString.Split(',')[1]) - 1] == ' ')
                                     break;
                                 Console.Clear();
                             }
-                            TicTacToe.Field[int.Parse(turn.Split(',')[0]) - 1, int.Parse(turn.Split(',')[1]) - 1] = TicTacToe.Player2Symb;
+                            TicTacToe.Field[int.Parse(turnString.Split(',')[0]) - 1, int.Parse(turnString.Split(',')[1]) - 1] = TicTacToe.Player2Symb;
                             if (TicTacToe.CheckWin())
                                 break;
                             socketClient.Send(Encoding.Unicode.GetBytes(TicTacToe.FieldToString()));
