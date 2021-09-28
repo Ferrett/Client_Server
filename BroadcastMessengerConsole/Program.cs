@@ -23,15 +23,21 @@ namespace BroadcastMessengerConsole
                     Console.WriteLine("\n[1] - Open app");
                     Console.WriteLine("[2] - Get files");
                     int menu = int.Parse(Console.ReadLine());
+                    int index = 0;
+
                     switch (menu)
                     {
+                        
                         case 1:
                             {
                                 server.ShowAllUsers(server);
 
-                                Console.WriteLine("Enter index of user:");
+                                do
+                                {
+                                    Console.WriteLine("Enter index of user:");
 
-                                int index = int.Parse(Console.ReadLine())-1;
+                                    index = int.Parse(Console.ReadLine()) - 1;
+                                } while (index < 0 || index > server.handler.Count - 1);
 
                                 Console.WriteLine("Enter \"--open\" and app path");
                                 string str = Console.ReadLine();
@@ -42,8 +48,12 @@ namespace BroadcastMessengerConsole
                         case 2:
                             {
                                 server.ShowAllUsers(server);
+                                do
+                                {
+                                    Console.WriteLine("Enter index of user:");
 
-                                int index = int.Parse(Console.ReadLine()) - 1;
+                                    index = int.Parse(Console.ReadLine()) - 1;
+                                } while (index < 0 || index > server.handler.Count - 1);
 
                                 Console.WriteLine("Enter \"--files\" and directory path");
                                 string str = Console.ReadLine();

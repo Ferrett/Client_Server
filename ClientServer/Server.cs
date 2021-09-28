@@ -48,7 +48,7 @@ namespace ClientServer
         }
         public void ShowAllUsers(Server server)
         {
-            Console.WriteLine();
+            Console.WriteLine("\nUser List:");
             for (int i = 0; i < server.handler.Count; i++)
             {
                 Console.WriteLine($"#{i + 1}: {server.handler[i].socket.RemoteEndPoint}");
