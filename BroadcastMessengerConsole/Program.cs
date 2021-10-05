@@ -10,24 +10,26 @@ namespace BroadcastMessengerConsole
     {
         static void Main(string[] args)
         {
-            Server server = new Server("127.0.0.1",8000);
+            Server server = new Server("127.0.0.1", 8000);
             server.Start();
-            Task task = new Task(()=>server.ConnectionUpdate());
+            Task task = new Task(() => server.ConnectionUpdate());
             task.Start();
-            
+
             while (true)
             {
-               
+
                 if (server.handler.Count != 0)
                 {
                     Console.WriteLine("\n[1] - Open app");
                     Console.WriteLine("[2] - Get files");
+                    Console.WriteLine("[3] - Change console res");
+                    Console.WriteLine("[4] - Change IP");
                     int menu = int.Parse(Console.ReadLine());
                     int index = 0;
 
                     switch (menu)
                     {
-                        
+
                         case 1:
                             {
                                 server.ShowAllUsers(server);
@@ -42,7 +44,7 @@ namespace BroadcastMessengerConsole
                                 Console.WriteLine("Enter \"--open\" and app path");
                                 string str = Console.ReadLine();
                                 server.Send(Server.FromStringToBytes(str), index);
-                                    
+
                                 break;
                             }
                         case 2:
@@ -63,10 +65,44 @@ namespace BroadcastMessengerConsole
                                 Console.WriteLine(str);
                                 break;
                             }
+                        case 3:
+                            {
+                                server.ShowAllUsers(server);
+                                do
+                                {
+                                    Console.WriteLine("Enter index of user:");
+
+                                    index = int.Parse(Console.ReadLine()) - 1;
+                                } while (index < 0 || index > server.handler.Count - 1);
+
+                                Console.WriteLine("Enter \"--res\" and console size like this: 30,30");
+                                string str = Console.ReadLine();
+                                server.Send(Server.FromStringToBytes(str), index);
+
+                                Console.WriteLine(str);
+                                break;
+                            }
+                        case 4:
+                            {
+                                server.ShowAllUsers(server);
+                                do
+                                {
+                                    Console.WriteLine("Enter index of user:");
+
+                                    index = int.Parse(Console.ReadLine()) - 1;
+                                } while (index < 0 || index > server.handler.Count - 1);
+
+                                Console.WriteLine("Enter \"--ip\" and new ip");
+                                string str = Console.ReadLine();
+                                server.Send(Server.FromStringToBytes(str), index);
+
+                                Console.WriteLine(str);
+                                break;
+                            }
                         default:
                             break;
                     }
-                   
+
                 }
             }
 
